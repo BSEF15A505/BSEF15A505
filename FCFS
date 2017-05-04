@@ -1,0 +1,38 @@
+BT = []     # burst time
+AT = []     # arrival time
+pID = []    # process ID
+print("Enter the number of process:", end=' ')
+nP = int(input())   # no of process
+
+for i in range(nP):
+    print("Enter arrival time for process ", i + 1, ":", end=' ')
+    AT.append(int(input()))
+    print("Enter burst time for process ", i + 1, ":", end=' ')
+    BT.append(int(input()))
+    pID.append(i+1)
+
+for i in range(nP):
+    for j in range(nP-1):
+        if AT[j] > AT[j+1]:
+            tempAT = AT[j]
+            AT[j] = AT[j+1]
+            AT[j+1] = tempAT
+
+            tempBT = BT[j]
+            BT[j] = BT[j + 1]
+            BT[j + 1] = tempBT
+
+            tempID = pID[j]
+            pID[j] = pID[j+1]
+            pID[j+1] = tempID
+cpuTime = 0
+w_time = 0
+for j in range(nP):
+    if AT[j] > cpuTime:
+        w_time = AT[j]-cpuTime
+    else:
+        w_time = cpuTime - AT[j]
+    print("Waiting time for Process ", pID[j], ": ", w_time)
+    print("Turn around time for process ", pID[j], ": ", w_time + BT[j])
+
+    cpuTime = cpuTime + BT[j]
