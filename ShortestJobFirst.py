@@ -55,8 +55,6 @@ for i in range(nP):
         w_time = AT[minBT] - cpuTime
     else:
         w_time = cpuTime - AT[minBT]
-    print("Waiting time for process ", pID[minBT], "with arrival time ",BT[minBT],": ", w_time)
-    print("Turn around time for process ", "with arrival time ",BT[minBT],": ", w_time + BT[minBT])
+    print("Waiting time for process ", pID[minBT], "with arrival time ",AT[minBT],": ", w_time)
+    print("Turn around time for process ", "with arrival time ",AT[minBT],": ", w_time + BT[minBT])
     cpuTime = cpuTime + BT[minBT]
-
-print(len(done))
