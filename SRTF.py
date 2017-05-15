@@ -1,36 +1,50 @@
-BT = []  # burst time
-AT = []  # arrival time
+def takeInput():
+    for i in range(noProcess):
+    print('Arrival time of process P', i + 1,  end = ' ')
+    aarivalTime.append(int(input()))
+    print('Burst time of process P', i + 1,  end = ' ')
+    burstTime.append(int(input()))
+
+def isDone(j):
+    for k in range(len(done)):
+            if(j == done[k]):
+                return True
+    return False
+
+def computewaitingTime(time):
+    waitingTime = 0
+    time = time + 1
+        burstTime[smallest] = burstTime[smallest] - 1
+        waitingtime = time - arrivalTime[smallest] - burstTime[smallest]
+        turnaroundtime = wairingtime + burstTime[smallest]
+        if(burstTime[smallest] == 0):
+            done.append(smallest)
+                       
+    return waitingTime
+
+burstTime = []  
+aarivalTime = []  
 
 print('Enter total number of process', end = ' ')
-n = int(input())
+noProcess = int(input())
 
-for i in range(n):
-    print('Arrival time of process P', i + 1,  end = ' ')
-    AT.append(int(input()))
-    print('Burst time of process P', i + 1,  end = ' ')
-    BT.append(int(input()))
+takeInput()
 
 smallest = 0  # shortest job
 done = [] # done processes
 for j in range(n):
-    if AT[j] < AT[smallest]:
-        smallest = j;
+    if aarivalTime[j] < [smallest]:
+        smallest = j
 time = AT[smallest]
-w_time = 0 # waiting time
-t_time = 0 # turnaroud time
+waitingtime = 0 
+turnaroundtime = 0 
 for i in range(n):
     for j in range(n):
         if(j==0):
-            if (AT[j] <= time) and (BT[j] < BT[smallest]) and (BT[j] > 0):
+            if (arrivalTime[j] <= time) and (burstTime[j] < burstTime[smallest]) and (burstTime[j] > 0):
                 smallest = j
-        for k in range(len(done)):
-            if(j != done[k]):
-                if (AT[j] <= time) and (BT[j] < BT[smallest]) and (BT[j] > 0):
-                    smallest = j
-        time = time + 1
-        BT[smallest] = BT[smallest] - 1
-        w_time = time - AT[smallest] - BT[smallest]
-        t_time = w_time + BT[smallest]
-        if(BT[smallest] == 0):
-            done.append(smallest)
-        print('process', smallest + 1, ' Waiting_time:', w_time + 1, 'Turnaround_time:', t_time)
+        if(isDone(j) == False):    
+            if (burstTime[j] <= time) and (burstTime[j] < burstTime[smallest]) and (burstTime[j] > 0):
+                smallest = j
+        computewaitingTime(time)
+        print('process', smallest + 1, ' Waiting_time:', waitingtime + 1, 'Turnaround_time:', turnaroundtime)
