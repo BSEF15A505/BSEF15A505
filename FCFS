@@ -1,38 +1,43 @@
-BT = []     # burst time
-AT = []     # arrival time
-pID = []    # process ID
+def findSmallest(arrivalTime, noProcess):
+    minIndex = noProcess
+    for i in range(noProcess):
+        if(arrivalTime[i]<arrivalTime[minIndex] and burstTime[i]>0):
+            minIndex = i
+    return minIndex
+
+def printdetails(smallest,waitingTime):
+    print("waiting time for process ", processID[smallest], " : ", waitingTime,end= '\n')
+    turnaroundTime = waitingTime + burstTime[smallest]
+    print("turnaround time for process ", processID[smallest], " : ", turnaroundTime, end = '\n')
+
+burstTime = []
+arrivalTime = []
+processID = []
+
 print("Enter the number of process:", end=' ')
-nP = int(input())   # no of process
+noProcess = int(input())   
 
-for i in range(nP):
+
+for i in range(noProcess):
     print("Enter arrival time for process ", i + 1, ":", end=' ')
-    AT.append(int(input()))
+    arrivalTime.append(int(input()))
     print("Enter burst time for process ", i + 1, ":", end=' ')
-    BT.append(int(input()))
-    pID.append(i+1)
+    burstTime.append(int(input()))
+    processID.append(i+1)
 
-for i in range(nP):
-    for j in range(nP-1):
-        if AT[j] > AT[j+1]:
-            tempAT = AT[j]
-            AT[j] = AT[j+1]
-            AT[j+1] = tempAT
 
-            tempBT = BT[j]
-            BT[j] = BT[j + 1]
-            BT[j + 1] = tempBT
-
-            tempID = pID[j]
-            pID[j] = pID[j+1]
-            pID[j+1] = tempID
 cpuTime = 0
-w_time = 0
-for j in range(nP):
-    if AT[j] > cpuTime:
-        w_time = AT[j]-cpuTime
+smallest = 0
+waitingTime = 0
+arrivalTime.append(9999)
+for j in range(noProcess):
+    smallest = findSmallest(arrivalTime,noProcess)
+    if(arrivalTime[smallest] > cpuTime):
+        waitingTime = arrivalTime[smallest] - cpuTime
     else:
-        w_time = cpuTime - AT[j]
-    print("Waiting time for Process ", pID[j], ": ", w_time)
-    print("Turn around time for process ", pID[j], ": ", w_time + BT[j])
-
-    cpuTime = cpuTime + BT[j]
+        waitingTime = cpuTime - arrivalTime[smallest]
+    
+    printdetails(smallest,waitingTime)
+    
+    cpuTime = cpuTime + burstTime[smallest]
+    burstTime[smallest] = 0
