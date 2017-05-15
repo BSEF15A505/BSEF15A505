@@ -1,60 +1,65 @@
-AT = []
-BT = []
-pID = []
-done = []
-
-def swap(a,b):
-    temp = a
-    a = b
-    b = temp
+def swap(list,j,j+1):
+    temp = list[j]
+    list[j] = list[j+1]
+    list[j+1] = temp
 
 
 def availableProcess(cpuTime):
-    minBT = 0
+    min = 0
     j = 0
     print("cpu time:",cpuTime)
-    for i in range(nP):
+    for i in range(noProcess):
         for k in range(len(done)):
             if(i!=done[k]):
-                if(AT[i]<=cpuTime):
+                if(arrivalTime[i]<=cpuTime):
                     j = j + 1
                     if(j< 1):
-                        minBT = i
+                        min = i
                     else:
-                        if(BT[i]<BT[minBT]):
-                            minBT = i
-    done.append(minBT)
+                        if(burstTime[i]<burstTime[minBT]):
+                            min = i
+    done.append(min)
     return minBT
 
-print("Enter number of processes:", end = ' ')
-nP = int(input())
 
-for i in range(nP):
-    print("Enter arrival time for process ", i + 1, end = ": ")
-    AT.append(int(input()))
-    print("Enter burst time for process ", i + 1, end = ": ")
-    BT.append(int(input()))
-    pID.append(i+1)
+def takeInput():
+    print("Enter number of processes:", end = ' ')
+    noProcess = int(input())
+
+    for i in range(nP):
+        print("Enter arrival time for process ", i + 1, end = ": ")
+        arrivalTime.append(int(input()))
+        print("Enter burst time for process ", i + 1, end = ": ")
+        burstTime.append(int(input()))
+        processID.append(i+1)
 
 
-for i in range(nP):
-    for j in range(nP-1):
-        if(AT[j] > AT[j+1]):
-            swap(AT[j],AT[j+1])
-            swap(BT[j],BT[j+1])
-            swap(pID[j],pID[j+1])
+def sortProcess():
+    for i in range(noProcess):
+        for j in range(noProcess-1):
+            if(arrivalTime[j] > arrivalTime[j+1]):
+                swap(arrivalTime,j,j+1)
+                swap(burstTime,j,j+1)
+                swap(processID,j,j+1)
 
-print("\n\n")
 
+takeInput()
+sortProcess()
+
+arriavlTime = []
+burstTime = []
+processID = []
+done = []
+noProcess = 0
 cpuTime = 0
-w_time = 0
+waitingTime = 0
 
 for i in range(nP):
     minBT = availableProcess(cpuTime)
-    if(AT[minBT]>cpuTime):
-        w_time = AT[minBT] - cpuTime
+    if(arrivalTime[minBT]>cpuTime):
+        waitingtime = arrivalTime[minBT] - cpuTime
     else:
-        w_time = cpuTime - AT[minBT]
-    print("Waiting time for process ", pID[minBT], "with arrival time ",AT[minBT],": ", w_time)
-    print("Turn around time for process ", "with arrival time ",AT[minBT],": ", w_time + BT[minBT])
-    cpuTime = cpuTime + BT[minBT]
+        waitingTime = cpuTime - arrivalTime[minBT]
+    print("Waiting time for process ", processID[minBT], "with arrival time ",arrivalTime[minBT],": ", waitingTime)
+    print("Turn around time for process ", "with arrival time ",arrivalTime[minBT],": ", waitingTime + burstTime[minBT])
+    cpuTime = cpuTime + burstTime[minBT]
